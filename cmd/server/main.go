@@ -2,6 +2,7 @@ package main
 
 import (
 	"banking-system/internal/configdb"
+	"banking-system/internal/routes"
 	"banking-system/pkg/config"
 	"context"
 	"log"
@@ -28,7 +29,8 @@ func main() {
 	log.Println("Database connection established")
 	//create fiber app
 	app := fiber.New()
-
+	// Setup routes
+	routes.SetupRoutes(app, db, cfg)
 	// Create a simple health check endpoint
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.SendString("Server is healthy!")
