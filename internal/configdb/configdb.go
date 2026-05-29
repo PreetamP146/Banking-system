@@ -22,6 +22,8 @@ func LoadDBConfig(cfg *config.Config) *sql.DB {
 	if err != nil {
 		log.Fatal("failed to open db:", err)
 	}
-	log.Println("Database connection established")
+	sqlDB.SetMaxOpenConns(25)
+	sqlDB.SetMaxIdleConns(25)
+	migrateDB(sqlDB)
 	return sqlDB
 }

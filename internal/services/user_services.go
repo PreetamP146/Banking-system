@@ -3,11 +3,12 @@ package services
 import (
 	"banking-system/internal/models"
 	"banking-system/internal/repository"
+	"banking-system/pkg/utils"
 	"fmt"
 )
 
 type UserService interface {
-	ValidateUser(req *models.RegisterUserRequest) error
+	RegisterUser(req *models.RegisterUserRequest) error
 }
 type userService struct {
 	repo repository.UsersRepository
@@ -16,14 +17,20 @@ type userService struct {
 func NewUserService(r repository.UsersRepository) UserService {
 	return &userService{repo: r}
 }
-func (s *userService) ValidateUser(req *models.RegisterUserRequest) error {
-	valid, err := s.repo.GetUserByEmail(req.Email)
+func (s *userService) RegisterUser(req *models.RegisterUserRequest) error {
+	valid, err := s.repo.IsUniqueEmail(req.Email)
 	if err != nil {
 		return err
 	}
 	if !valid {
-		return fmt.Errorf("user with email %s already exists", req.Email)
+		return fmt.Errorf("User with email %s already exists", req.Email)
 	} else {
-		return s.repo.CreateUser()
+		hash, err := utils.HashPassword(req.Password)
+		if err != nil {
+			return err
+		}
+
+		req.Password = hash
+		return s.repo.CreateUser(req)
 	}
 }

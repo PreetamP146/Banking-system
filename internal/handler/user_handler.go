@@ -26,13 +26,8 @@ func (h *userHandler) RegisterUser(c *fiber.Ctx) error {
 	if !utils.ValidateEmail(req.Email) {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid email format"})
 	}
-	hashedPassword, err := utils.HashPassword(req.Password)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to hash password"})
-	}
-	req.Password = hashedPassword
-	if err := h.svc.ValidateUser(&req); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to validate user"})
+	if err := h.svc.RegisterUser(&req); err != nil {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"error": err.Error()})
 	}
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"message": "User registered successfully"})
 }
