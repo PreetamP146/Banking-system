@@ -10,6 +10,7 @@ import (
 
 type UserHandler interface {
 	RegisterUser(c *fiber.Ctx) error
+	LoginUser(c *fiber.Ctx) error
 }
 type userHandler struct {
 	svc services.UserService

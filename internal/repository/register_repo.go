@@ -11,6 +11,7 @@ import (
 type UsersRepository interface {
 	CreateUser(req *models.RegisterUserRequest) error
 	IsUniqueEmail(email string) (bool, error)
+	GetUserByEmail(email string) (*models.User, error)
 }
 type usersRepository struct {
 	db *sql.DB

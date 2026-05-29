@@ -9,6 +9,7 @@ import (
 
 type UserService interface {
 	RegisterUser(req *models.RegisterUserRequest) error
+	LoginUser(req *models.LoginUserRequest) (string, error)
 }
 type userService struct {
 	repo repository.UsersRepository

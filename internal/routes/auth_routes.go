@@ -2,12 +2,12 @@ package routes
 
 import (
 	"banking-system/internal/handler"
-	"banking-system/pkg/config"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func AuthRoutes(api fiber.Router, handler handler.UserHandler, cfg *config.Config) {
+func AuthRoutes(api fiber.Router, handler handler.UserHandler) {
 	auth := api.Group("/auth")
 	auth.Post("/register", handler.RegisterUser)
+	auth.Post("/login", handler.LoginUser)
 }
