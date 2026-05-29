@@ -7,7 +7,7 @@ import (
 )
 
 func migrateDB(db *sql.DB) {
-	query, err := os.ReadFile("./db/migration/user_table.sql")
+	query, err := os.ReadFile("./internal/db/migration/user_table.sql")
 	if err != nil {
 		log.Fatalf("Failed to read migration file: %v", err)
 	}
