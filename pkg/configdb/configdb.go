@@ -1,7 +1,7 @@
 package configdb
 
 import (
-	"banking-system/pkg/config"
+	"banking-system/internal/config"
 	"database/sql"
 	"fmt"
 	"log"

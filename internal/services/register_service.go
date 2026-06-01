@@ -1,9 +1,9 @@
 package services
 
 import (
+	"banking-system/internal/config"
 	"banking-system/internal/models"
 	"banking-system/internal/repository"
-	"banking-system/pkg/config"
 	"banking-system/pkg/utils"
 	"fmt"
 )

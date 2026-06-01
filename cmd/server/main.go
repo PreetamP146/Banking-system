@@ -1,9 +1,9 @@
 package main
 
 import (
-	"banking-system/internal/configdb"
+	"banking-system/internal/config"
 	"banking-system/internal/routes"
-	"banking-system/pkg/config"
+	"banking-system/pkg/configdb"
 	"context"
 	"log"
 	"time"
@@ -21,7 +21,7 @@ func main() {
 
 	// Database Connection
 	db := configdb.LoadDBConfig(cfg)
-
+	defer db.Close()
 	// test database connection
 	if err := db.PingContext(ctx); err != nil {
 		log.Fatalf("Database connection failed: %v", err)
