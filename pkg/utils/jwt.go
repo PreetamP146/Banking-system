@@ -2,17 +2,29 @@ package utils
 
 import (
 	"banking-system/pkg/config"
+	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
-func GenerateJWT(userID string, role string, cfg *config.Config) (string, error) {
+type JWTClaims struct {
+	UserID uuid.UUID `json:"user_id"`
+	Role   string    `json:"role"`
+	jwt.RegisteredClaims
+}
+
+func GenerateJWT(userID uuid.UUID, role string, cfg *config.Config) (string, error) {
 	jwtKey := []byte(cfg.JWTSecret)
-	claims := jwt.MapClaims{
-		"user_id": userID,
-		"role":    role,
+	claims := JWTClaims{
+		UserID: userID,
+		Role:   role,
+		RegisteredClaims: jwt.RegisteredClaims{
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(5 * time.Minute)),
+		},
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		return "", err

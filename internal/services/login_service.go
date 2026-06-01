@@ -17,7 +17,7 @@ func (s *userService) LoginUser(req *models.LoginUserRequest) (string, error) {
 	if !utils.CheckPasswordHash(req.Password, user.Password_Hash) {
 		return "", fmt.Errorf("Invalid email or password")
 	}
-	token, err := utils.GenerateToken(user.ID, user.Role)
+	token, err := utils.GenerateJWT(user.ID, user.Role, s.cfg)
 	if err != nil {
 		return "", err
 	}

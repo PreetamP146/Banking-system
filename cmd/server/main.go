@@ -30,7 +30,7 @@ func main() {
 	//create fiber app
 	app := fiber.New()
 	// Setup routes
-	routes.SetupRoutes(app, db)
+	routes.SetupRoutes(app, db, cfg)
 	// Create a simple health check endpoint
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.SendString("Server is healthy!")

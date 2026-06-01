@@ -3,6 +3,7 @@ package services
 import (
 	"banking-system/internal/models"
 	"banking-system/internal/repository"
+	"banking-system/pkg/config"
 	"banking-system/pkg/utils"
 	"fmt"
 )
@@ -13,10 +14,14 @@ type UserService interface {
 }
 type userService struct {
 	repo repository.UsersRepository
+	cfg  *config.Config
 }
 
-func NewUserService(r repository.UsersRepository) UserService {
-	return &userService{repo: r}
+func NewUserService(r repository.UsersRepository, cfg *config.Config) UserService {
+	return &userService{repo: r,
+		cfg: cfg,
+	}
+
 }
 func (s *userService) RegisterUser(req *models.RegisterUserRequest) error {
 	valid, err := s.repo.IsUniqueEmail(req.Email)
