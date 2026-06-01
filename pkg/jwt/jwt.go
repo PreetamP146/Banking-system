@@ -1,4 +1,4 @@
-package utils
+package jwt
 
 import (
 	"banking-system/pkg/config"
